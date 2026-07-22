@@ -1,0 +1,66 @@
+<div class="sign-up-card">
+    <div class="title">
+        <label>Create Your Construction Tracker Account</label>
+    </div>
+
+    <div class="sign-up-body">
+        <div class="image-panel">
+            <img src="/HassanAllamHoldingIcon.webp" alt="Sign Up Image">
+        </div>
+
+        <form class="entries" #SubmitForm="ngForm" (ngSubmit)="SignUpUser({ username, organization, DateOfBirth, role, email, password }, reEnterPassword)">
+            <div class="name-entry">
+                <label>username</label><br>
+                <input type="text" placeholder="..." [(ngModel)]="username" name="fullName">
+            </div>
+
+            <div class="username-entry">
+                <label>work email</label><br>
+                <input type="email" placeholder="..." [(ngModel)]="email" name="email">
+            </div>
+            <div class="organization-entry">
+                <label>organization</label><br>
+                <input type="text" placeholder="..." [(ngModel)]="organization" name="organization">
+            </div>
+
+            <div class="role-entry">
+                <label>role</label><br>
+                <select [(ngModel)]="role" name="role">
+                    <option value="" disabled selected>select a role</option>
+                    <option value="project_manager">Project Manager</option>
+                    <option value="site_engineer">Site Engineer</option>
+                    <option value="viewer">Viewer</option>
+                </select>
+            </div>
+
+            <div class="dob-row">
+                <app-dob-picker (dateSelected)="onDobSelected($event)"></app-dob-picker>
+                <div class="age-label">
+                    <label>{{ age() !== null ? age() : 'N/A' }}</label>
+                </div>
+            </div>
+
+            <div class="password-entry">
+                <label>password</label><br>
+                <input type="password" placeholder="..." [(ngModel)]="password" name="password">
+            </div>
+
+            <div class="password-entry">
+                <label>confirm password</label><br>
+                <input type="password" placeholder="..." [(ngModel)]="reEnterPassword" name="confirmPassword">
+            </div>
+
+            <div class="terms-checkbox">
+
+                <input type="checkbox" id="acceptTerms" [(ngModel)]="termsAccepted" name="termsAccepted">
+                <label for="acceptTerms">I accept the terms and conditions</label>
+            </div>
+
+            @if (IsError()) {
+                <p class="error-message">{{ errorMessage() }}</p>
+            }
+
+            <button class="sign-up-button" type="submit">Sign Up</button>
+        </form>
+    </div>
+</div>

@@ -1,9 +1,8 @@
 export interface UserModel {
     username: string
-    age: number
+    organization: string
+    DateOfBirth: string
+    role: string
     email: string
     password: string
-    budget: number
-    threshold: number
-    overallLimit: number
 }

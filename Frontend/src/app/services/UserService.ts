@@ -25,7 +25,7 @@ export class UserService {
             !user.email?.trim() ||
             !user.password?.trim() ||
             !reEnterPassword?.trim() ||
-            user.age === null || user.age === undefined
+            user.DateOfBirth === null || user.DateOfBirth === undefined
         ) {
             return "Please fill in all required fields.";
         }
@@ -37,7 +37,10 @@ export class UserService {
         }
 
         // 3. Age range
-        if (user.age < 16 || user.age > 120) {
+        const today = new Date();
+        const birthDate = new Date(user.DateOfBirth);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        if (age < 16 || age > 120) {
             return "Age must be between 16 and 120.";
         }
 

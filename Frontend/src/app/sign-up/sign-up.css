@@ -1,0 +1,334 @@
+/* =========================================================
+   HOST / PAGE BACKGROUND — white, fading to grey at the top
+   ========================================================= */
+html, body {
+    margin: 0;
+    background-color: #eeeeee;
+}
+
+:host {
+    display: block;
+    width: 100%;
+}
+
+.sign-up-card {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #ffffff;
+
+    /* White background fading from grey at the top down to white */
+    background-image: linear-gradient(180deg, #cfcfcf 0%, #eeeeee 35%, #ffffff 75%);
+    background-attachment: fixed;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeInPage 0.6s ease-out;
+}
+
+/* =========================================================
+   TITLE — full-width white banner, top-center
+   ========================================================= */
+.title {
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    padding: 22px 0;
+    z-index: 10;
+    animation: slideDownTitle 0.6s ease-out;
+}
+
+.title label {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #2b2b2b;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* =========================================================
+   BODY — icon on top, thin separator, form below
+   ========================================================= */
+.sign-up-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 5;
+    padding: 28px 20px 60px;
+}
+
+/* ---------- Icon (background shows through) ---------- */
+.image-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    animation: fadeInLeft 0.8s ease-out;
+    margin-bottom: 20px;
+}
+
+.image-panel img {
+    max-width: 160px;
+    max-height: 160px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.15));
+}
+
+/* ---------- SEPARATOR: thin orange line between icon and form ---------- */
+.sign-up-body::before {
+    content: "";
+    order: 1;
+    width: min(320px, 60%);
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ff6a00, transparent);
+    box-shadow: 0 0 8px rgba(255, 106, 0, 0.4);
+    border-radius: 2px;
+    margin-bottom: 24px;
+}
+
+.image-panel {
+    order: 0;
+}
+
+.entries {
+    order: 2;
+}
+
+/* ---------- Sign-up form panel (solid, hides background) ---------- */
+.entries {
+    width: 100%;
+    max-width: 620px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 16px;
+    background-color: #e9e9e9;
+    padding: 40px 44px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    position: relative;
+    animation: fadeInRight 0.8s ease-out;
+}
+
+/* Fields that take a full row on their own */
+.terms-checkbox,
+.error-message,
+.sign-up-button {
+    grid-column: 1 / -1;
+}
+
+
+/* Orange gradient strip along the top of the form */
+.entries::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #ffb347, #ff6a00, #ffb347);
+    background-size: 200% 100%;
+    animation: gradientShift 3s ease-in-out infinite;
+}
+
+/* ---------- Form field groups (name, email, org, password) ---------- */
+.username-entry,
+.password-entry,
+.organization-entry,
+.name-entry,
+.role-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.username-entry label,
+.password-entry label,
+.organization-entry label,
+.name-entry label,
+.role-entry label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+    text-transform: lowercase;
+}
+
+.username-entry input,
+.password-entry input,
+.organization-entry input,
+.name-entry input {
+    padding: 12px 14px;
+    border: 1.5px solid #cfcfcf;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 0.95rem;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Bright orange border/glow on focus + hover */
+.username-entry input:focus, .username-entry input:hover,
+.password-entry input:focus, .password-entry input:hover,
+.organization-entry input:focus, .organization-entry input:hover,
+.name-entry input:focus, .name-entry input:hover {
+    border-color: #ff6a00;
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.22);
+}
+
+/* ---------- Role dropdown ---------- */
+.role-entry select {
+    padding: 12px 14px;
+    border: 1.5px solid #cfcfcf;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 0.95rem;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.role-entry select:focus,
+.role-entry select:hover {
+    border-color: #ff6a00;
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.22);
+}
+
+/* ---------- Terms checkbox ---------- */
+.terms-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: -6px 0 0;
+}
+
+/* ---------- Sign-up button — orange gradient ---------- */
+.sign-up-button {
+    padding: 13px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #ff9a3c, #ff6a00);
+    background-size: 200% 100%;
+    background-position: 0% 0%;
+    box-shadow: 0 6px 16px rgba(255, 106, 0, 0.35);
+    transition: background-position 0.4s ease, transform 0.15s ease, box-shadow 0.25s ease;
+}
+
+.sign-up-button:hover {
+    background-position: 100% 0%;
+    box-shadow: 0 8px 20px rgba(255, 106, 0, 0.45);
+}
+
+.sign-up-button:active {
+    transform: scale(0.97);
+}
+
+#acceptTerms {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #cfcfcf;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+#acceptTerms:checked {
+    background-color: #ff6a00;
+    border-color: #ff6a00;
+}
+
+#acceptTerms:hover {
+    border-color: #ff6a00;
+}
+
+.dob-row {
+    grid-column: 1 / -1;   /* take the full width of the form grid */
+    display: flex;
+    align-items: flex-end; /* aligns the square with the bottom of the date input */
+    gap: 12px;
+}
+
+.age-label {
+    flex-shrink: 0;
+    width: 56px;
+    height: 46px; /* roughly matches your input height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #ff9a3c, #ff6a00); /* fixed: background, not background-color */
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+@keyframes fadeInPage {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes slideDownTitle {
+    from { opacity: 0; transform: translateY(-24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 560px) {
+    .entries {
+        grid-template-columns: 1fr;
+        padding: 32px 24px;
+    }
+
+    .terms-checkbox,
+    .error-message,
+    .sign-up-button {
+        grid-column: 1;
+    }
+
+    .image-panel img {
+        max-width: 120px;
+        max-height: 120px;
+    }
+}
