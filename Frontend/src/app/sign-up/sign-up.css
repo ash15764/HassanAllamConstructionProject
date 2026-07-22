@@ -283,6 +283,23 @@ html, body {
     font-weight: 700;
     font-size: 0.95rem;
 }
+
+a{
+    grid-column: 1 / -1;
+    justify-self: center;
+    color: #ff6a00;
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a:hover {
+    text-decoration: underline;
+}
 /* =========================================================
    ANIMATIONS
    ========================================================= */

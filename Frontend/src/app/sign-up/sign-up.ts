@@ -5,9 +5,10 @@ import { UserService } from '../services/UserService';
 import { signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CalendarComponent } from './calendar-component/calendar-component';
+import { NgStyle } from '@angular/common';
 @Component({
   selector: 'app-sign-up',
-  imports: [FormsModule, CalendarComponent],
+  imports: [FormsModule, CalendarComponent, NgStyle],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.css',
 })
@@ -23,6 +24,7 @@ export class SignUp {
   errorMessage = signal('');
   age = signal<number | null>(null);
   termsAccepted: boolean = false;
+  termsViewed: boolean = false;
   constructor(private userService: UserService, private route: Router) {}
 
   SignUpUser(user: UserModel, reEnterPassword: string) {
@@ -67,5 +69,9 @@ export class SignUp {
 onDobSelected(dateStr: string) {
     this.DateOfBirth = dateStr;
     this.CalculateAge(dateStr);
+}
+
+SendToTerms_Conditions(){
+  this.route.navigate(['terms-conditions']);
 }
 }

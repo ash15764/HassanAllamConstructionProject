@@ -52,14 +52,15 @@
 
             <div class="terms-checkbox">
 
-                <input type="checkbox" id="acceptTerms" [(ngModel)]="termsAccepted" name="termsAccepted">
+                <input type="checkbox" id="acceptTerms" [(ngModel)]="termsAccepted" name="termsAccepted" [disabled]="!termsViewed"
+                [ngStyle]="{ cursor: termsViewed ? 'pointer' : 'not-allowed' }">
                 <label for="acceptTerms">I accept the terms and conditions</label>
             </div>
-
+            <a (click)="SendToTerms_Conditions()">View Terms and Conditions</a>
             @if (IsError()) {
                 <p class="error-message">{{ errorMessage() }}</p>
             }
-
+            
             <button class="sign-up-button" type="submit">Sign Up</button>
         </form>
     </div>
