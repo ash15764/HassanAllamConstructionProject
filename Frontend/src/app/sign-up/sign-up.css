@@ -300,6 +300,15 @@ a{
 a:hover {
     text-decoration: underline;
 }
+
+
+.field-error {
+    color: #d32f2f;
+    font-size: 0.78rem;
+    font-weight: 500;
+    margin: 2px 0 0;
+}
+
 /* =========================================================
    ANIMATIONS
    ========================================================= */

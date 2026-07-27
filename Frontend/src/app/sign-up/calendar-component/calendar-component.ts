@@ -12,6 +12,7 @@ export class CalendarComponent implements AfterViewInit, OnDestroy {
   @ViewChild('dobInput') dobInput!: ElementRef<HTMLInputElement>;
   @Input() label: string = 'date of birth';
   @Output() dateSelected = new EventEmitter<string>();
+  @Output() dobBlurred = new EventEmitter<void>();
 
   private fpInstance: Instance | null = null;
 
@@ -20,6 +21,10 @@ export class CalendarComponent implements AfterViewInit, OnDestroy {
       dateFormat: 'Y-m-d',
       onChange: (dates, dateStr) => this.dateSelected.emit(dateStr)
     }) as Instance;
+
+    this.dobInput.nativeElement.addEventListener('blur', () => {
+      this.dobBlurred.emit();
+    });
   }
 
   ngOnDestroy() {

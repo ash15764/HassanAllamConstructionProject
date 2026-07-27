@@ -8,6 +8,8 @@ import { CalendarComponent } from './calendar-component/calendar-component';
 import { NgStyle } from '@angular/common';
 import { TermsAndConditions } from './terms-and-conditions/terms-and-conditions';
 import { HttpClient } from '@angular/common/http';
+import { validatePassword, validateConfirmPassword, validateDob, 
+    validateEmail, validateUsername } from "../utils/Validators";
 @Component({
   selector: 'app-sign-up',
   imports: [FormsModule, CalendarComponent, NgStyle, TermsAndConditions],
@@ -28,25 +30,19 @@ export class SignUp {
   termsAccepted: boolean = false;
   showTermsModal: boolean = false;
   termsViewed: boolean = false;
+  usernameError = signal<string | null>(null);
+  emailError = signal<string | null>(null);
+  dobError = signal<string | null>(null);
+  passwordError = signal<string | null>(null);
+  confirmPasswordError = signal<string | null>(null);
   constructor(private userService: UserService, private route: Router, private Http: HttpClient) {}
 
-  apiUrl = "https://ahmedtrialproject-default-rtdb.firebaseio.com/users.json";
   SignUpUser(user: UserModel, reEnterPassword: string) {
     this.userService.RegisterUser(user, reEnterPassword).subscribe({
       next: (user) => {
-        this.Http.post(this.apiUrl, user).subscribe({
-          next: (response) => {
-            console.log('User data saved successfully:', response);
-            this.IsError.set(false);
-            this.route.navigate(['/log-in']);
-          },
-          error: (err) => {
-            console.error('Error saving user data:', err);
-            this.IsError.set(true);
-            this.errorMessage.set('Failed to save user data.');
-          },
-        });
-        
+        console.log('User registered:', user);
+        this.IsError.set(false);
+        this.route.navigate(['/log-in']);
       },
       error: (err) => {
         console.error('Error registering user:', err);
@@ -58,46 +54,70 @@ export class SignUp {
   }
 
 
- CalculateAge(dateOfBirth: string): void {
-    const dob = new Date(dateOfBirth);
+    CalculateAge(dateOfBirth: string): void {
+        const dob = new Date(dateOfBirth);
 
-    if (isNaN(dob.getTime())) {
-        this.age.set(null);
-        return;
+        if (isNaN(dob.getTime())) {
+            this.age.set(null);
+            return;
+        }
+
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+
+        const hasHadBirthdayThisYear =
+            today.getMonth() > dob.getMonth() ||
+            (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
+
+        if (!hasHadBirthdayThisYear) {
+            age--;
+        }
+
+        this.age.set(age); // <-- the actual fix
     }
 
-    const today = new Date();
-    let age = today.getFullYear() - dob.getFullYear();
-
-    const hasHadBirthdayThisYear =
-        today.getMonth() > dob.getMonth() ||
-        (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
-
-    if (!hasHadBirthdayThisYear) {
-        age--;
+    onDobSelected(dateStr: string) {
+        this.DateOfBirth = dateStr;
+        this.CalculateAge(dateStr);
     }
 
-    this.age.set(age); // <-- the actual fix
-}
 
-onDobSelected(dateStr: string) {
-    this.DateOfBirth = dateStr;
-    this.CalculateAge(dateStr);
-}
+    openTerms() {
+        this.showTermsModal = true;
+        this.termsViewed = true;
+    }
 
+    onTermsAccepted() {
+        this.termsAccepted = true;
+        this.showTermsModal = false;
+    }
 
-openTerms() {
-    this.showTermsModal = true;
-    this.termsViewed = true;
-}
+    onTermsClosed() {
+        this.showTermsModal = false;
 
-onTermsAccepted() {
-    this.termsAccepted = true;
-    this.showTermsModal = false;
-}
+    }
+    onUsernameBlur() {
+        this.usernameError.set(validateUsername(this.username));
+    }
 
-onTermsClosed() {
-    this.showTermsModal = false;
+    onEmailBlur() {
+        this.emailError.set(validateEmail(this.email));
+    }
 
-}
+    onDobBlur() {
+        this.dobError.set(validateDob(this.DateOfBirth));
+        this.CalculateAge(this.DateOfBirth); // your existing call, kept
+    }
+
+    onPasswordBlur() {
+        this.passwordError.set(validatePassword(this.password));
+        // re-check confirm password too, in case it was filled first
+        if (this.reEnterPassword) {
+            this.confirmPasswordError.set(validateConfirmPassword(this.password, this.reEnterPassword));
+        }
+    }
+
+    onConfirmPasswordBlur() {
+        this.confirmPasswordError.set(validateConfirmPassword(this.password, this.reEnterPassword));
+    }
 }

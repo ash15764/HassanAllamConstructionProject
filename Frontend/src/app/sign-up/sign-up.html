@@ -11,12 +11,18 @@
         <form class="entries" #SubmitForm="ngForm" (ngSubmit)="SignUpUser({ username, organization, DateOfBirth, role, email, password }, reEnterPassword)">
             <div class="name-entry">
                 <label>username</label><br>
-                <input type="text" placeholder="..." [(ngModel)]="username" name="fullName">
+                <input type="text" placeholder="..." [(ngModel)]="username" name="fullName" (blur)="onUsernameBlur()">
+                @if (usernameError()) {
+                    <p class="field-error">{{ usernameError() }}</p>
+                }
             </div>
 
             <div class="username-entry">
                 <label>work email</label><br>
-                <input type="email" placeholder="..." [(ngModel)]="email" name="email">
+                <input type="email" placeholder="..." [(ngModel)]="email" name="email" (blur)="onEmailBlur()">
+                @if (emailError()) {
+                    <p class="field-error">{{ emailError() }}</p>
+                }
             </div>
             <div class="organization-entry">
                 <label>organization</label><br>
@@ -34,20 +40,30 @@
             </div>
 
             <div class="dob-row">
-                <app-dob-picker (dateSelected)="onDobSelected($event)"></app-dob-picker>
+                <app-dob-picker (dateSelected)="onDobSelected($event) " (dobBlurred)="onDobBlur()"></app-dob-picker>
                 <div class="age-label">
                     <label>{{ age() !== null ? age() : 'N/A' }}</label>
                 </div>
+            @if (dobError()) {
+                <p class="field-error">{{ dobError() }}</p>
+            }
             </div>
+
 
             <div class="password-entry">
                 <label>password</label><br>
-                <input type="password" placeholder="..." [(ngModel)]="password" name="password">
+                <input type="password" placeholder="..." [(ngModel)]="password" name="password" (blur)="onPasswordBlur()">
+                @if (passwordError()) {
+                    <p class="field-error">{{ passwordError() }}</p>
+                }
             </div>
 
             <div class="password-entry">
                 <label>confirm password</label><br>
-                <input type="password" placeholder="..." [(ngModel)]="reEnterPassword" name="confirmPassword">
+                <input type="password" placeholder="..." [(ngModel)]="reEnterPassword" name="confirmPassword" (blur)="onConfirmPasswordBlur()">
+                @if (confirmPasswordError()) {
+                    <p class="field-error">{{ confirmPasswordError() }}</p>
+                }
             </div>
 
             <div class="terms-checkbox">
