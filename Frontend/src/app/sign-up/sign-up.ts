@@ -6,9 +6,11 @@ import { signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CalendarComponent } from './calendar-component/calendar-component';
 import { NgStyle } from '@angular/common';
+import { TermsAndConditions } from './terms-and-conditions/terms-and-conditions';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-sign-up',
-  imports: [FormsModule, CalendarComponent, NgStyle],
+  imports: [FormsModule, CalendarComponent, NgStyle, TermsAndConditions],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.css',
 })
@@ -24,15 +26,27 @@ export class SignUp {
   errorMessage = signal('');
   age = signal<number | null>(null);
   termsAccepted: boolean = false;
+  showTermsModal: boolean = false;
   termsViewed: boolean = false;
-  constructor(private userService: UserService, private route: Router) {}
+  constructor(private userService: UserService, private route: Router, private Http: HttpClient) {}
 
+  apiUrl = "https://ahmedtrialproject-default-rtdb.firebaseio.com/users.json";
   SignUpUser(user: UserModel, reEnterPassword: string) {
     this.userService.RegisterUser(user, reEnterPassword).subscribe({
       next: (user) => {
-        console.log('User registered:', user);
-        this.IsError.set(false);
-        this.route.navigate(['/log-in']);
+        this.Http.post(this.apiUrl, user).subscribe({
+          next: (response) => {
+            console.log('User data saved successfully:', response);
+            this.IsError.set(false);
+            this.route.navigate(['/log-in']);
+          },
+          error: (err) => {
+            console.error('Error saving user data:', err);
+            this.IsError.set(true);
+            this.errorMessage.set('Failed to save user data.');
+          },
+        });
+        
       },
       error: (err) => {
         console.error('Error registering user:', err);
@@ -71,7 +85,19 @@ onDobSelected(dateStr: string) {
     this.CalculateAge(dateStr);
 }
 
-SendToTerms_Conditions(){
-  this.route.navigate(['terms-conditions']);
+
+openTerms() {
+    this.showTermsModal = true;
+    this.termsViewed = true;
+}
+
+onTermsAccepted() {
+    this.termsAccepted = true;
+    this.showTermsModal = false;
+}
+
+onTermsClosed() {
+    this.showTermsModal = false;
+
 }
 }

@@ -1,0 +1,27 @@
+<div class="terms-card" (click)="onReturn()">
+    <div class="terms-panel" (click)="$event.stopPropagation()">
+        <div class="title">
+            <label>Terms and Conditions</label>
+        </div>
+
+        <div class="terms-body">
+                <ul class="terms-list">
+                    <li>By using our services, you agree to these terms and conditions.</li>
+                    <li>You must be at least 16 years old to use our services.</li>
+                    <li>You are responsible for maintaining the confidentiality of your account information.</li>
+                    <li>Project data, including site photos, timelines, budgets, and progress reports, is provided by you and your team, and you are responsible for its accuracy.</li>
+                    <li>You must have the appropriate authorization from your organization or client before uploading project, site, or personnel information.</li>
+                    <li>Task statuses, milestone dates, and budget figures are tracking estimates only and do not constitute a legal or contractual guarantee of project completion or cost.</li>
+                    <li>Site photos and documents uploaded to the app may be shared with other members of your project team as configured by your project administrator.</li>
+                    <li>You agree not to use the app to store or transmit information that violates safety regulations, building codes, or the confidentiality obligations of any project contract.</li>
+                    <li>We are not liable for on-site delays, safety incidents, or contractual disputes arising from reliance on data tracked within the app.</li>
+                    <li>Project data may be retained for a limited period after a project is marked complete, in line with our data retention policy.</li>
+                </ul>
+
+                <div class="terms-actions">
+                    <button class="return-button" type="button" (click)="onReturn()">◄</button>
+                    <button class="accept-button" type="button" (click)="onAccept()">Accept</button>
+                </div>
+        </div>
+    </div>
+</div>

@@ -56,7 +56,13 @@
                 [ngStyle]="{ cursor: termsViewed ? 'pointer' : 'not-allowed' }">
                 <label for="acceptTerms">I accept the terms and conditions</label>
             </div>
-            <a (click)="SendToTerms_Conditions()">View Terms and Conditions</a>
+            <a (click)="openTerms()">View Terms and Conditions</a>
+            @if (showTermsModal) {
+                <app-terms-and-conditions
+                    (accepted)="onTermsAccepted()"
+                    (closed)="onTermsClosed()">
+                </app-terms-and-conditions>
+            }
             @if (IsError()) {
                 <p class="error-message">{{ errorMessage() }}</p>
             }
