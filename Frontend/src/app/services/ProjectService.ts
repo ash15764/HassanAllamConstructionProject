@@ -18,7 +18,7 @@ export class ProjectService {
         private userService: UserService
     ) {}
 
-    AddProject(project: Omit<ProjectModel, 'id' | 'ownerId' | 'organizationId'>): Observable<ProjectModel> {
+    AddProject(project: Omit<ProjectModel, 'id' | 'ownerId' | 'organization'>): Observable<ProjectModel> {
         const currentUser = this.userService.currentUser();
 
         if (!currentUser) {
@@ -27,8 +27,8 @@ export class ProjectService {
 
         const fullProject: Partial<ProjectModel> = {
             ...project,
-            ownerId: currentUser.username, // swap for a real uid if you add one to UserModel
-            organization: currentUser.organization,
+            ownerId: currentUser.username,
+            organization: currentUser.organization, // was organizationId
         };
 
         return this.http.post<{ name: string }>(this.apiUrl, fullProject).pipe(

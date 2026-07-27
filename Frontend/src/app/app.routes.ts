@@ -4,10 +4,11 @@ import { HomePage } from './home-page/home-page';
 import { ProjectsPage } from './projects-page/projects-page';
 import { LogIn } from '../app/log-in/log-in';
 import { SignUp } from './sign-up/sign-up';
-
+import { AddProject } from './add-project/add-project';
 export const routes: Routes = [
   { path: 'sign-in', component: LogIn },
   { path: 'sign-up', component: SignUp },
+  { path: 'projects/add', component: AddProject },
 
   {
     path: '',

@@ -1,0 +1,78 @@
+<div class="container">
+<div class="title">
+    <h2>Add New Project</h2>
+</div>
+<div class="form">
+    <form (ngSubmit)="OnSubmit()" #projectForm="ngForm">
+        <div class="form-group">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName" name="projectName" [(ngModel)]="projectName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="allocatedBudget">Allocated Budget:</label>
+            <input type="number" id="allocatedBudget" name="allocatedBudget" [(ngModel)]="allocatedBudget" required>
+        </div>
+        <div class="form-group">
+            <select class="status" [(ngModel)]="status" name="status" required>
+                <option value="planning">Planning</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+            </select>
+            <select class="phase" [(ngModel)]="phase" name="phase" required>
+                @if(status === 'planning'){<option value="site_survey">Site Survey</option>
+                <option value="design_permitting">Design & Permitting</option>
+                <option value="procurement_planning">Procurement Planning</option>
+                <option value="budget_approval">Budget Approval</option>}
+                @else if(status === 'in-progress'){<option value="site_preparation">Site Preparation / Excavation</option>
+                <option value="foundation">Foundation</option>
+                <option value="framing">Structural Framing</option>
+                <option value="mep_rough_in">MEP Rough-In</option>
+                <option value="exterior">Exterior / Envelope</option>
+                <option value="interior_finishing">Interior Finishing</option>
+                <option value="inspections">Inspections & Testing</option>}
+                @else if(status === 'completed'){<option value="punch_list">Punch List</option>
+                <option value="handover">Handover</option>
+                <option value="closeout">Closeout</option>}
+                @else{
+                <option value="" disabled selected>select a phase</option>
+                }
+            </select>
+        </div>
+        <div class="form-group progress-group">
+            <label for="progress">Progress: {{ progress }}%</label>
+            <input
+                type="range"
+                id="progress"
+                name="progress"
+                min="0"
+                max="100"
+                step="5"
+                [(ngModel)]="progress"
+                class="progress-slider">
+        </div>
+        <div class="admin-warning">
+            <span class="warning-icon">⚠</span>
+            <p>
+                Changing <strong>status</strong>, <strong>phase</strong>, or <strong>progress</strong> should be
+                reviewed and confirmed by a project admin to avoid inconsistent tracking data. New projects
+                should generally start at their initial phase and 0% progress, and be verified with an admin
+                before advancing.
+            </p>
+        </div>
+        
+
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" [(ngModel)]="startDate" required>
+        </div>
+
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" required>
+        </div>
+
+        <button type="submit" [disabled]="!projectForm.form.valid">Add Project</button>
+    </form>
+</div>
+</div>
