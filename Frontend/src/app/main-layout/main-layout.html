@@ -1,8 +1,8 @@
 <nav class="navbar">
     <div class="nav-brand">Construction Tracker</div>
     <ul class="nav-links">
-        <li [class.active]="activeTab === 'home'" (click)="setTab('home')">Home</li>
-        <li [class.active]="activeTab === 'projects'" (click)="goToProjects()">Projects</li>
+        <li [class.active]="activeTab === 'home'" (click)="setTab('home')" routerLink="/home">Home</li>
+        <li [class.active]="activeTab === 'projects'" (click)="setTab('projects')">Projects</li>
         <li class="disabled-tab" (click)="showComingSoon('Statistics')">Statistics</li>
         <li class="disabled-tab" (click)="showComingSoon('News')">News</li>
         <li class="disabled-tab" (click)="showComingSoon('Communicate')">Communicate</li>
@@ -10,9 +10,11 @@
     <div class="nav-user">
         <span>{{ userService.currentUser()?.username }}</span>
         <span class="role-badge">{{ userService.currentUser()?.role }}</span>
-        <button (click)="LogOut()">Logout</button>
+        <button (click)="userService.Logout()">Logout</button>
     </div>
 </nav>
+
+<router-outlet></router-outlet>
 
 @if (comingSoonLabel()) {
     <div class="toast">{{ comingSoonLabel() }} coming soon</div>

@@ -1,0 +1,31 @@
+
+<section class="projects-overview">
+    <div class="section-header">
+        <h2>Your Projects</h2>
+        <div class="section-actions">
+            <button class="add-button" *ngIf="canAddProject" (click)="addProject()">+ Add Project</button>
+        </div>
+    </div>
+
+    <div class="project-cards">
+        @for (project of projects; track project.id) {
+            <div class="project-card">
+                <div class="card-top">
+                    <h3>{{ project.name }}</h3>
+                    <span class="status-badge" [ngClass]="project.status">{{ project.status }}</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="project.progress"></div>
+                </div>
+                <p class="progress-text">{{ project.progress }}% complete</p>
+                <p class="budget-text">${{ project.currentSpend }} / ${{ project.allocatedBudget }}</p>
+                @if(canEditProject()){
+                    <button class="edit-button" (click)="ToEdit(project.id)">Edit Project</button>
+                    <button class="delete-button" (click)="DeleteProject(project.id)">Delete Project</button>
+                }
+            </div>
+        } @empty {
+            <p class="empty-state">No projects yet — create your first one.</p>
+        }
+    </div>
+</section>

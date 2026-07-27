@@ -64,4 +64,8 @@ export class ProjectService {
             map(projects => projects.slice(0, count))
         );
     }
+    DeleteProject(projectId: string): Observable<void> {
+        const url = `${this.apiUrl.replace('.json', '')}/${projectId}.json`;
+        return this.http.delete<void>(url);
+    }
 }
