@@ -20,7 +20,7 @@ export class SignUp {
   username: string = '';
   DateOfBirth: string = '';
   organization: string = '';
-  role: string = '';
+  role: 'admin' | 'project_manager' | 'site_engineer' | 'viewer' = 'viewer';
   email: string = '';
   password: string = '';
   reEnterPassword: string = '';

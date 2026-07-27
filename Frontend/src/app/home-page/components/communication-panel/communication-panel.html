@@ -1,0 +1,11 @@
+<section class="communicate-panel">
+    <h2>Communicate</h2>
+    <ul class="colleague-list">
+        @for (person of orgMembers(); track person.username) {
+            <li>
+                <span>{{ person.username }} — {{ person.role }}</span>
+                <button class="chat-button" disabled>Chat</button>
+            </li>
+        }
+    </ul>
+</section>

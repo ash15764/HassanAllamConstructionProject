@@ -22,6 +22,7 @@ export class LogIn {
     this.userService.RetrieveUser(usernameOrEmail, password).subscribe({
       next: (user) => {
         console.log('User retrieved:', user);
+        this.route.navigate(['/home']);
         this.IsError.set(false);
       },
       error: (err) => {
