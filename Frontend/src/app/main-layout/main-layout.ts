@@ -1,6 +1,8 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd  } from '@angular/router';
 import { UserService } from '../services/UserService';
+import { filter } from 'rxjs/operators';
+
 @Component({
   selector: 'app-main-layout',
   standalone: true,
@@ -9,14 +11,33 @@ import { UserService } from '../services/UserService';
   styleUrl: './main-layout.css',
 })
 export class MainLayoutComponent {
-  activeTab: string = 'home';
+  activeTab = signal<string>('home');
   comingSoonLabel = signal<string | null>(null);
 
-  constructor(public userService: UserService, private router: Router) {}
+  constructor(public userService: UserService, private router: Router) {
+    this.updateActiveTab(this.router.url);
 
-  setTab(tab: string) {
-    this.activeTab = tab;
-    this.router.navigate([`/${tab}`]);
+    // Keep it in sync on every navigation, regardless of what triggered it
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        this.updateActiveTab(event.urlAfterRedirects);
+      });
+  }
+  private updateActiveTab(url: string) {
+    if (url.startsWith('/projects')) {
+      this.activeTab.set('projects');
+    } else if (url.startsWith('/home')) {
+      this.activeTab.set('home');
+    }
+    // add more branches here as you add real routes (statistics, news, etc.)
+  }
+  goToProjects() {
+    this.router.navigate(['/projects']);
+  }
+
+  goToHome() {
+    this.router.navigate(['/home']);
   }
 
   showComingSoon(feature: string) {

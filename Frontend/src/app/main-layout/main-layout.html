@@ -1,8 +1,8 @@
 <nav class="navbar">
     <div class="nav-brand">Construction Tracker</div>
     <ul class="nav-links">
-        <li [class.active]="activeTab === 'home'" (click)="setTab('home')" routerLink="/home">Home</li>
-        <li [class.active]="activeTab === 'projects'" (click)="setTab('projects')">Projects</li>
+        <li [class.active]="activeTab() === 'home'" (click)="goToHome()" routerLink="/home">Home</li>
+        <li [class.active]="activeTab() === 'projects'" (click)="goToProjects()">Projects</li>
         <li class="disabled-tab" (click)="showComingSoon('Statistics')">Statistics</li>
         <li class="disabled-tab" (click)="showComingSoon('News')">News</li>
         <li class="disabled-tab" (click)="showComingSoon('Communicate')">Communicate</li>
