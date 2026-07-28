@@ -29,7 +29,7 @@ export class ProjectsPage {
     return role === 'project_manager' || role === 'admin' || role === 'site_engineer';
   });
   addProject() {
-    this.router.navigate(['./add']);
+    this.router.navigate(['projects/add']);
   }
   AllProjects(){
     this.projectService.GetProjectsForOrganization().subscribe(projects => {

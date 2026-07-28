@@ -15,7 +15,7 @@ import { ProjectService } from '../services/ProjectService';
 export class AddProject {
   projectName: string = '';
   allocatedBudget: number | null = null;
-  startDate: string = '';
+  startDate: string = new Date().toISOString().split('T')[0]; // e.g. "2026-07-28"
   endDate: string = '';
   location: string = '';
   warningAcknowledged = signal(false);

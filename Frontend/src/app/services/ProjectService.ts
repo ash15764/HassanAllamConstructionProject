@@ -75,4 +75,12 @@ export class ProjectService {
             catchError(err => throwError(() => err))
         );
     }
+
+    UpdateProject(
+        projectId: string,
+        updates: Pick<ProjectModel, 'name' | 'location' | 'estimatedEndDate' | 'allocatedBudget' | 'progress' | 'phase' | 'status'>
+    ): Observable<void> {
+        const url = `${this.apiUrl.replace('.json', '')}/${projectId}.json`;
+        return this.http.patch<void>(url, updates);
+    }
 }

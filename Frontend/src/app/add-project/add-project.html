@@ -11,7 +11,7 @@
 
         <div class="form-group">
             <label for="allocatedBudget">Allocated Budget:</label>
-            <input type="number" id="allocatedBudget" name="allocatedBudget" [(ngModel)]="allocatedBudget" required>
+            <input type="number" id="allocatedBudget" name="allocatedBudget" [min]="1" [(ngModel)]="allocatedBudget" required>
         </div>
 
         <div class="form-group">
@@ -21,12 +21,12 @@
 
         <div class="form-group">
             <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" name="startDate" [(ngModel)]="startDate" required>
+            <input type="date" id="startDate" name="startDate" [(ngModel)]="startDate" disabled>
         </div>
 
         <div class="form-group">
             <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" required>
+            <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" [min]="startDate" required>
         </div>
         <div class="admin-warning">
             <h4>Please read the following instructions</h4>

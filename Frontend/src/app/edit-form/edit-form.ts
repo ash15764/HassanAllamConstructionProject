@@ -20,9 +20,11 @@ export class EditForm implements OnChanges, OnInit {
   Initial_Budget: number = 0;
   progress: number = 0;
   phase: string = '';
+  minEndDate: string = new Date().toISOString().split('T')[0];
   status: "planning" | "in-progress" | "completed" = "planning";
   IsError = signal(false);
   errorMessage = signal('');
+  IsBudgetError = signal(false);
   allowManualProgress = signal(false);
   constructor(private projectService: ProjectService, private cdr: ChangeDetectorRef) {}
   ngOnInit() {
@@ -56,13 +58,35 @@ export class EditForm implements OnChanges, OnInit {
     });
   }
   OnSubmit(){
-    this.saved.emit();  
+    
+    this.projectService.UpdateProject(this.projectId, {
+        name: this.projectName,
+        location: this.location,
+        estimatedEndDate: this.endDate,
+        allocatedBudget: this.Current_Budget,
+        progress: this.progress,
+        phase: this.phase,
+        status: this.status
+    }).subscribe({
+        next: () => this.saved.emit(),
+        error: (err) => {
+            this.errorMessage.set('Failed to save changes.');
+            this.IsError.set(true);
+        }
+    });  
   }
   onCancel(){
     this.closed.emit();
   }
   UpdateCurrentBudget(){
+    if(this.Extra_Budget < 0) {
+      this.Extra_Budget = 0;
+      this.IsBudgetError.set(true);
+    }
     this.Current_Budget = this.Initial_Budget + this.Extra_Budget;
+    setTimeout(() => {
+      this.IsBudgetError.set(false);
+    }, 2000);
   }
   AutoUpdateProgress(){
     if(this.phase !== null && this.phase !== undefined && !this.allowManualProgress()) {
