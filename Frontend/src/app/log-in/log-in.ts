@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute  } from '@angular/router';
 import { UserService } from '../services/UserService';
 import { FormsModule } from '@angular/forms';
 @Component({
@@ -14,7 +14,17 @@ export class LogIn {
   password: string = '';
   IsError = signal(false);
   errorMessage = signal('');
-  constructor(private userService: UserService, private route: Router) {}
+  sessionExpiredMessage = signal<string | null>(null);
+  constructor(private userService: UserService, private route: Router, private activatedRoute: ActivatedRoute) {}
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params['sessionExpired'] === 'true') {
+        this.sessionExpiredMessage.set(
+          "Your previous session included protected data. Please sign in again to continue."
+        );
+      }
+    });
+  }
   SendToSignUp() {
     this.route.navigate(['/sign-up']);
   }

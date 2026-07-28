@@ -5,6 +5,7 @@ import { ProjectsPage } from './projects-page/projects-page';
 import { LogIn } from '../app/log-in/log-in';
 import { SignUp } from './sign-up/sign-up';
 import { AddProject } from './add-project/add-project';
+import { authGuard } from './guards/auth-guard';
 export const routes: Routes = [
   { path: 'sign-in', component: LogIn },
   { path: 'sign-up', component: SignUp },
@@ -13,10 +14,10 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       { path: 'home', component: HomePage },
       { path: 'projects', component: ProjectsPage },
-      // { path: 'projects/add', component: AddProjectComponent }, etc.
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },
