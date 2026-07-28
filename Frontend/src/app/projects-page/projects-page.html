@@ -37,3 +37,10 @@
         }
     </div>
 </section>
+@if (editingProjectId()) {
+    <app-edit-form
+        [projectId]="editingProjectId()!"
+        (saved)="onEditSaved()"
+        (closed)="onEditClosed()">
+    </app-edit-form>
+}

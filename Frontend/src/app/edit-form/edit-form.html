@@ -1,0 +1,98 @@
+<div class="edit-overlay" (click)="onCancel()">
+<div class="edit-panel" (click)="$event.stopPropagation()">
+<div class="container">
+<div class="form">
+    <div class="title">
+        <h2>Edit Project</h2>
+    </div>
+    <form (ngSubmit)="OnSubmit()" #projectForm="ngForm">
+        <div class="form-scroll">
+        <div class="form-group">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName" name="projectName" [(ngModel)]="projectName" [disabled]="!ChangingEssentials" required>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" [(ngModel)]="location" [disabled]="!ChangingEssentials" required>
+        </div>
+
+        <div class="form-group">
+            <label for="CurrentBudget">Current Budget:</label>
+            <input type="number" id="CurrentBudget" name="CurrentBudget" [(ngModel)]="Current_Budget" [disabled]="true">
+            <p>The current allocated budget for the project. Any additional funds allocated will be added to this amount.</p>
+            <label for="ExtraBudget">Extra Budget:</label>
+            <input type="number" id="ExtraBudget" name="ExtraBudget" [(ngModel)]="Extra_Budget" (change)="UpdateCurrentBudget()" required>
+            <p>Any additional funds allocated for the project, will be augmented on the initial allocated budget.</p>
+        </div>
+        <div class="form-group">
+            <label for="progress">Progress:</label>
+            <input
+                type="range"
+                id="progress"
+                name="progress"
+                min="0"
+                max="100"
+                step="5"
+                [(ngModel)]="progress"
+                [disabled]="!allowManualProgress()"
+                [style.background]="'linear-gradient(90deg, #ff6a00 ' + progress + '%, #d9d9d9 ' + progress + '%)'"
+                class="progress-slider"
+                required>
+            <span class="progress-value">{{ progress }}%</span>
+            <p>Current progress of the project in percentage.</p>
+            <input type="checkbox" id="isDefault" name="isDefault" [ngModel]="allowManualProgress()"
+                    (ngModelChange)="allowManualProgress.set($event)">
+            <p>Check this box to allow changing the progress manually.</p>
+            <label for="status">Status:</label>
+            <select id="status" name="status" [(ngModel)]="status" (ngModelChange)="phase = ''" required>
+                <option value="planning">Planning</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+            </select>
+            <p>Current status of the project.</p>
+            <label for="phase">Phase:</label>
+            <select id="phase" name="phase" [(ngModel)]="phase" (change)="AutoUpdateProgress()" required>
+                @if(status === 'planning'){
+                    <option value="site-survey">Site Survey</option>
+                    <option value="designing-permitting">Designing & Permitting</option>
+                    <option value="procurement">Procurement Planning</option>
+                    <option value="budget-approval">Budget Approval</option>
+                }
+                @else if(status === 'in-progress'){
+                    <option value="site-preparation">Site Preparation</option>
+                    <option value="foundation">Foundation</option>
+                    <option value="structure">Structural Framing</option>
+                    <option value="MEP">MEP Rough-In</option>
+                    <option value="Exterior-finishes">Exterior Finishes</option>
+                    <option value="interior-finishes">Interior Finishes</option>
+                    <option value="final-inspection">Final Inspection</option>
+                }@else if(status === "completed"){
+                    <option value="punch-list">Punch List</option>
+                    <option value="final-handover">Final Handover</option>
+                    <option value="close-out">Close Out</option>
+                }
+            </select>
+            <p>Current phase of the project.</p>
+        </div>
+        <div class="form-group">
+            <label for="endDate">New End Date:</label>
+            <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" [disabled]="!ChangingEssentials" required>
+        </div>
+        <div class="form-group">
+            <label for="ChangingEssentials">Change Essentials:</label>
+            <input type="checkbox" id="ChangingEssentials" name="ChangingEssentials" [(ngModel)]="ChangingEssentials">
+            <p>Check this box to allow changing the core project details (name, location, end date), check with the administrator firsthand.</p>
+        </div>
+        @if(IsError()){
+            <div class="error-message">
+                {{errorMessage()}}
+            </div>
+        }
+        </div>
+        <div class="form-actions">
+            <button type="button" (click)="onCancel()">✖ Cancel</button>
+            <button type="submit" [disabled]="!projectForm.form.valid">✔ Save Changes</button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</div>

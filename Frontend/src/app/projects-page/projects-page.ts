@@ -4,13 +4,15 @@ import { ProjectModel } from '../models/ProjectModel';
 import { Router } from '@angular/router';
 import { UserService } from '../services/UserService';
 import { ProjectService } from '../services/ProjectService';
+import { EditForm } from '../edit-form/edit-form';
 @Component({
   selector: 'app-projects-page',
-  imports: [CommonModule],
+  imports: [CommonModule, EditForm],
   templateUrl: './projects-page.html',
   styleUrl: './projects-page.css',
 })
 export class ProjectsPage {
+  editingProjectId = signal<string | null>(null);
   constructor(private router: Router, private userService: UserService, 
     private projectService: ProjectService) {
   }
@@ -35,7 +37,14 @@ export class ProjectsPage {
     });
   }
   ToEdit(projectId: string) {
-    this.router.navigate([`./edit/${projectId}`]);
+    this.editingProjectId.set(projectId);
+  }
+  onEditSaved() {
+    this.editingProjectId.set(null);
+    this.AllProjects();
+  }
+  onEditClosed() {
+    this.editingProjectId.set(null);
   }
   DeleteProject(projectId: string) {
     this.projectService.DeleteProject(projectId).subscribe(() => {

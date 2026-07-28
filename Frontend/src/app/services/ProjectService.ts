@@ -68,4 +68,11 @@ export class ProjectService {
         const url = `${this.apiUrl.replace('.json', '')}/${projectId}.json`;
         return this.http.delete<void>(url);
     }
+
+    SelectProject(projectId: string): Observable<ProjectModel> {
+        const url = `${this.apiUrl.replace('.json', '')}/${projectId}.json`;
+        return this.http.get<ProjectModel>(url).pipe(
+            catchError(err => throwError(() => err))
+        );
+    }
 }

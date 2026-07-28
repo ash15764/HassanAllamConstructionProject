@@ -1,0 +1,367 @@
+/* =========================================================
+   HOST / PAGE BACKGROUND
+   ========================================================= */
+:host {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #ffffff;
+    background-image: linear-gradient(180deg, #cfcfcf 0%, #eeeeee 22%, #ffffff 50%);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 32px 20px 48px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.title h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2b2b2b;
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+}
+
+.edit-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeInBackdrop 0.3s ease-out;
+    overflow-y: auto;
+    padding: 60px 20px;
+}
+
+.edit-panel {
+    width: 100%;
+    max-width: 560px;
+    animation: slideDownPanel 0.35s ease-out;
+}
+
+/* =========================================================
+   FORM PANEL — compact padding, smaller gaps than the add form
+   ========================================================= */
+.form {
+    background-color: #e9e9e9;
+    border-radius: 12px;
+    padding: 26px 28px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    position: relative;
+}
+ 
+.form::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    border-radius: 12px 12px 0 0;
+    background: linear-gradient(90deg, #ffb347, #ff6a00, #ffb347);
+    background-size: 200% 100%;
+    animation: gradientShift 3s ease-in-out infinite;
+}
+ 
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+ 
+/* ---------- Scrollable body: keeps title + buttons fixed, fields scroll ---------- */
+.form-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 6px; /* room for the scrollbar so it doesn't overlap fields */
+}
+ 
+/* Firefox */
+.form-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #ff6a00 transparent;
+}
+ 
+/* Chrome / Edge / Safari */
+.form-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+ 
+.form-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+ 
+.form-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ffb347, #ff6a00);
+    border-radius: 3px;
+    border: none;
+}
+ 
+.form-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff9a3c, #e85f00);
+}
+ 
+/* =========================================================
+   FIELD GROUPS — two related fields sit side by side
+   ========================================================= */
+.form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    align-items: flex-end;
+}
+ 
+.form-group > label {
+    flex-basis: 100%;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #555;
+    text-transform: lowercase;
+    margin-bottom: -4px;
+}
+ 
+.form-group > input,
+.form-group > select {
+    flex: 1 1 160px;
+    min-width: 0;
+    padding: 8px 11px;
+    border: 1.5px solid #cfcfcf;
+    border-radius: 7px;
+    background-color: #ffffff;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+ 
+.form-group > input:focus,
+.form-group > input:hover,
+.form-group > select:focus,
+.form-group > select:hover {
+    border-color: #ff6a00;
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.2);
+}
+ 
+.form-group > input:disabled,
+.form-group > select:disabled {
+    background-color: #f2f2f2;
+    color: #999;
+    border-color: #e2e2e2;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+ 
+.form-group p {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    color: #777;
+    font-style: italic;
+}
+ 
+/* ---------- Checkboxes inline with their explanatory text ---------- */
+.form-group input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    accent-color: #ff6a00;
+    cursor: pointer;
+    align-self: center;
+}
+ 
+.form-group input[type="checkbox"] + p,
+.form-group input[type="checkbox"] ~ p {
+    flex-basis: auto;
+    font-style: normal;
+    font-size: 0.76rem;
+    color: #666;
+}
+ 
+/* ---------- Progress slider ---------- */
+.progress-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1 1 100%;
+    height: 6px;
+    border-radius: 4px;
+    background: #d9d9d9;
+    outline: none;
+    cursor: pointer;
+    margin: 2px 0 0;
+}
+ 
+.progress-slider:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+ 
+.progress-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #ff9a3c, #ff6a00);
+    box-shadow: 0 2px 6px rgba(255, 106, 0, 0.4);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+ 
+.progress-slider:disabled::-webkit-slider-thumb {
+    background: #bbbbbb;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+ 
+.progress-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+ 
+.progress-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #ff9a3c, #ff6a00);
+    box-shadow: 0 2px 6px rgba(255, 106, 0, 0.4);
+    cursor: pointer;
+}
+ 
+.progress-slider:disabled::-moz-range-thumb {
+    background: #bbbbbb;
+    box-shadow: none;
+}
+ 
+.progress-slider::-moz-range-progress {
+    background: linear-gradient(90deg, #ff9a3c, #ff6a00);
+    height: 6px;
+    border-radius: 4px;
+}
+ 
+.progress-value {
+    flex: 0 0 auto;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #ff6a00;
+    min-width: 34px;
+    text-align: right;
+}
+ 
+/* =========================================================
+   ERROR MESSAGE
+   ========================================================= */
+.error-message {
+    background: #fdecea;
+    border: 1.5px solid #f5c2bd;
+    color: #c62828;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 9px 12px;
+    border-radius: 7px;
+}
+ 
+/* =========================================================
+   ACTION BUTTONS — Cancel / Save, side by side
+   ========================================================= */
+form > button {
+    display: none; /* individual buttons hidden; wrapped below */
+}
+ 
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+    padding-top: 14px;
+    border-top: 1.5px solid #dcdcdc;
+    flex-shrink: 0;
+}
+ 
+button[type="button"],
+button[type="submit"] {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease,
+        box-shadow 0.25s ease, transform 0.15s ease, opacity 0.2s ease;
+}
+ 
+/* ---------- Cancel — white at rest, red on hover ---------- */
+button[type="button"] {
+    color: #c62828;
+    border: 1.5px solid rgba(198, 40, 40, 0.4);
+}
+ 
+button[type="button"]:hover {
+    background-color: rgba(245, 93, 100, 0.25);
+    border-color: #c62828;
+    box-shadow: 0 5px 12px rgba(198, 40, 40, 0.35);
+}
+ 
+/* ---------- Save Changes — white at rest, green on hover ---------- */
+button[type="submit"] {
+    color: #2e7d32;
+    border: 1.5px solid rgba(46, 125, 50, 0.4);
+}
+ 
+button[type="submit"]:hover:not(:disabled) {
+    background-color: rgba(93, 245, 100, 0.25);
+    border-color: #2e7d32;
+    box-shadow: 0 5px 12px rgba(46, 125, 50, 0.35);
+}
+ 
+button[type="submit"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+ 
+button:active:not(:disabled) {
+    transform: scale(0.97);
+}
+ 
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+@keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+ 
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 480px) {
+    .form {
+        padding: 20px 18px;
+    }
+ 
+    .form-group > input,
+    .form-group > select {
+        flex: 1 1 100%;
+    }
+}
+ 
