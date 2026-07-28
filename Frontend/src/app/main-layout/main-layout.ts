@@ -23,4 +23,8 @@ export class MainLayoutComponent {
     this.comingSoonLabel.set(feature);
     setTimeout(() => this.comingSoonLabel.set(null), 2000);
   }
+  Logout() {
+    this.userService.Logout();
+    this.router.navigate(['/login']);
+  }
 }

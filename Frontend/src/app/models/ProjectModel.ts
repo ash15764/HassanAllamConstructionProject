@@ -1,6 +1,7 @@
 export interface ProjectModel {
     id: string;
     name: string;
+    location: string;
     status: 'planning' | 'in-progress' | 'completed';
     phase: string;
     startDate: string;

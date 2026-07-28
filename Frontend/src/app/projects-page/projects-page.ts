@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectModel } from '../models/ProjectModel';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ export class ProjectsPage {
    ngOnInit() {
     this.AllProjects();
   }
-  projects: ProjectModel[] = [];
+  projects = signal<ProjectModel[]>([]);
   canAddProject = computed(() => {
     const role = this.userService.currentUser()?.role;
     return role === 'project_manager' || role === 'admin';
@@ -31,7 +31,7 @@ export class ProjectsPage {
   }
   AllProjects(){
     this.projectService.GetProjectsForOrganization().subscribe(projects => {
-      this.projects = projects;
+      this.projects.set(projects);
     });
   }
   ToEdit(projectId: string) {

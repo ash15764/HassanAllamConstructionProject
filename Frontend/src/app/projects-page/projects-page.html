@@ -8,7 +8,7 @@
     </div>
 
     <div class="project-cards">
-        @for (project of projects; track project.id) {
+        @for (project of projects(); track project.id) {
             <div class="project-card">
                 <div class="card-top">
                     <h3>{{ project.name }}</h3>

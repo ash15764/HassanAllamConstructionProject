@@ -15,12 +15,10 @@ import { ProjectService } from '../services/ProjectService';
 export class AddProject {
   projectName: string = '';
   allocatedBudget: number | null = null;
-  status: 'planning' | 'in-progress' | 'completed' | '' = '';
-  phase: string = '';
-  progress: number = 0;
   startDate: string = '';
   endDate: string = '';
-
+  location: string = '';
+  warningAcknowledged = signal(false);
   IsError = signal(false);
   errorMessage = signal('');
 
@@ -30,11 +28,6 @@ export class AddProject {
   ) {}
 
   OnSubmit() {
-    if (this.status === '') {
-      this.errorMessage.set('Please select a status.');
-      this.IsError.set(true);
-      return;
-    }
 
     if (this.allocatedBudget === null || this.allocatedBudget <= 0) {
       this.errorMessage.set('Please enter a valid budget.');
@@ -48,15 +41,22 @@ export class AddProject {
       return;
     }
 
+    if(!this.warningAcknowledged()) {
+      this.errorMessage.set('Please read the instructions provided above before submitting.');
+      this.IsError.set(true);
+      return;
+    }
+
     const project: Omit<ProjectModel, 'id' | 'ownerId' | 'organization'> = {
       name: this.projectName,
-      status: this.status,
-      phase: this.phase,
+      location: this.location,
+      status: "planning",
+      phase: "initialization",
       startDate: this.startDate,
       estimatedEndDate: this.endDate,
       allocatedBudget: this.allocatedBudget,
       currentSpend: 0,
-      progress: this.progress,
+      progress: 0,
     };
 
     this.projectService.AddProject(project).subscribe({

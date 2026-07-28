@@ -13,54 +13,11 @@
             <label for="allocatedBudget">Allocated Budget:</label>
             <input type="number" id="allocatedBudget" name="allocatedBudget" [(ngModel)]="allocatedBudget" required>
         </div>
+
         <div class="form-group">
-            <select class="status" [(ngModel)]="status" name="status" required>
-                <option value="planning">Planning</option>
-                <option value="in-progress">In Progress</option>
-                <option value="completed">Completed</option>
-            </select>
-            <select class="phase" [(ngModel)]="phase" name="phase" required>
-                @if(status === 'planning'){<option value="site_survey">Site Survey</option>
-                <option value="design_permitting">Design & Permitting</option>
-                <option value="procurement_planning">Procurement Planning</option>
-                <option value="budget_approval">Budget Approval</option>}
-                @else if(status === 'in-progress'){<option value="site_preparation">Site Preparation / Excavation</option>
-                <option value="foundation">Foundation</option>
-                <option value="framing">Structural Framing</option>
-                <option value="mep_rough_in">MEP Rough-In</option>
-                <option value="exterior">Exterior / Envelope</option>
-                <option value="interior_finishing">Interior Finishing</option>
-                <option value="inspections">Inspections & Testing</option>}
-                @else if(status === 'completed'){<option value="punch_list">Punch List</option>
-                <option value="handover">Handover</option>
-                <option value="closeout">Closeout</option>}
-                @else{
-                <option value="" disabled selected>select a phase</option>
-                }
-            </select>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" [(ngModel)]="location" required>
         </div>
-        <div class="form-group progress-group">
-            <label for="progress">Progress: {{ progress }}%</label>
-            <input
-                type="range"
-                id="progress"
-                name="progress"
-                min="0"
-                max="100"
-                step="5"
-                [(ngModel)]="progress"
-                class="progress-slider">
-        </div>
-        <div class="admin-warning">
-            <span class="warning-icon">⚠</span>
-            <p>
-                Changing <strong>status</strong>, <strong>phase</strong>, or <strong>progress</strong> should be
-                reviewed and confirmed by a project admin to avoid inconsistent tracking data. New projects
-                should generally start at their initial phase and 0% progress, and be verified with an admin
-                before advancing.
-            </p>
-        </div>
-        
 
         <div class="form-group">
             <label for="startDate">Start Date:</label>
@@ -71,7 +28,25 @@
             <label for="endDate">End Date:</label>
             <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" required>
         </div>
-
+        <div class="admin-warning">
+            <h4>Please read the following instructions</h4>
+            <ul>
+                <li>Newly created projects will be visible to all users in the organization.</li>
+                <li>Project progress is initially maintained at 0%, and will be updated with the change on the phase and status of the project.</li>
+                <li>Initial project status will be set to <strong>"planning"</strong>, while the phase will be a placeholder as <strong>"Initialization"</strong>.</li>
+                <li>People outside of this organization will not have access to this project nor will they receive updates on its completion.</li>
+                <li>Please ensure that you have the necessary permissions and approvals before adding a new project.</li>
+            </ul>
+            <div class="admin-warning-confirm">
+                <input type="checkbox" id="warningAcknowledged" name="warningAcknowledged" [(ngModel)]="warningAcknowledged">
+                <label for="warningAcknowledged">I've read and understood the above instructions</label>
+            </div>
+        </div>
+        @if(IsError()){
+            <div class="error-message">
+                {{errorMessage()}}
+            </div>
+        }
         <button type="submit" [disabled]="!projectForm.form.valid">Add Project</button>
     </form>
 </div>
