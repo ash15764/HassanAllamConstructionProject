@@ -2,6 +2,16 @@
     <div class="title">
         <label>Sign In to Construction Tracker By Hassan Allam</label>
     </div>
+    @if (sessionExpiredMessage()) {
+        <div
+            class="session-notice"
+            [class.fade-out]="isClosing">
+            <label>⚠ {{ sessionExpiredMessage() }}</label>
+            <button class="close-button" (click)="CloseSessionNotice()">
+            X
+            </button>
+        </div>
+    }
     <div class="sign-in-body">
         <!-- LEFT: Hassan Allam Holding Icon -->
         <div class="image-panel">

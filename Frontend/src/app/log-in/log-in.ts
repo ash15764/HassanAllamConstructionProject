@@ -14,6 +14,7 @@ export class LogIn {
   password: string = '';
   IsError = signal(false);
   errorMessage = signal('');
+  isClosing = false;
   sessionExpiredMessage = signal<string | null>(null);
   constructor(private userService: UserService, private route: Router, private activatedRoute: ActivatedRoute) {}
   ngOnInit() {
@@ -41,5 +42,13 @@ export class LogIn {
         this.errorMessage.set(err.message || 'An error occurred while retrieving the user.');
       },
     });
+  }
+  CloseSessionNotice() {
+    this.isClosing = true;
+
+    setTimeout(() => {
+      this.sessionExpiredMessage.set(null);
+      this.isClosing = false;
+    }, 300); // Match the CSS transition duration
   }
 }
