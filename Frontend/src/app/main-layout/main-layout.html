@@ -3,7 +3,7 @@
     <ul class="nav-links">
         <li [class.active]="activeTab() === 'home'" (click)="goToHome()" routerLink="/home">Home</li>
         <li [class.active]="activeTab() === 'projects'" (click)="goToProjects()">Projects</li>
-        <li class="disabled-tab" (click)="showComingSoon('Statistics')">Statistics</li>
+        <li [class.active]="activeTab() === 'statistics'" (click)="goToStatistics()">Statistics</li>
         <li class="disabled-tab" (click)="showComingSoon('News')">News</li>
         <li class="disabled-tab" (click)="showComingSoon('Communicate')">Communicate</li>
     </ul>

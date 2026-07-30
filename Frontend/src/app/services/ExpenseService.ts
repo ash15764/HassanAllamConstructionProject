@@ -24,4 +24,10 @@ export class ExpenseService {
             catchError(err => throwError(() => err))
         );
     }
+    GetAllExpenses(): Observable<ExpenseModel[]> {
+    return this.http.get<Record<string, Omit<ExpenseModel, 'id'>> | null>(this.apiUrl).pipe(
+        map(response => Object.entries(response ?? {}).map(([id, expense]) => ({ ...expense, id }))),
+        catchError(err => throwError(() => new Error('Failed to load expenses.')))
+    );
+}
 }

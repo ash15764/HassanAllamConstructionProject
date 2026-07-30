@@ -1,0 +1,62 @@
+<div class="line-chart-wrap">
+    @if (hasData()) {
+        <svg [attr.viewBox]="'0 0 ' + viewWidth + ' ' + viewHeight" class="line-chart-svg" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="areaFillGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" [attr.stop-color]="gradientFrom()" stop-opacity="0.35"></stop>
+                    <stop offset="100%" [attr.stop-color]="gradientTo()" stop-opacity="0"></stop>
+                </linearGradient>
+                <linearGradient id="lineStrokeGradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" [attr.stop-color]="gradientFrom()"></stop>
+                    <stop offset="100%" [attr.stop-color]="gradientTo()"></stop>
+                </linearGradient>
+            </defs>
+
+            <!-- Gridlines + y-axis value labels -->
+            @for (grid of gridLines(); track grid.y) {
+                <line
+                    class="grid-line"
+                    x1="36" [attr.x2]="viewWidth - 16"
+                    [attr.y1]="grid.y" [attr.y2]="grid.y">
+                </line>
+                <text class="grid-label" x="4" [attr.y]="grid.y + 3">{{ grid.value }}</text>
+            }
+
+            <!-- Area fill under the line -->
+            <path class="area-fill" [attr.d]="areaPath()" fill="url(#areaFillGradient)"></path>
+
+            <!-- The line itself -->
+            <path class="chart-line" [attr.d]="linePath()" stroke="url(#lineStrokeGradient)"></path>
+
+            <!-- Data points + x-axis labels -->
+            @for (point of points(); track $index) {
+                <circle
+                    class="chart-point"
+                    [class.hovered]="hoveredIndex() === $index"
+                    [attr.cx]="point.x" [attr.cy]="point.y" r="4"
+                    (mouseenter)="onPointHover($index)"
+                    (mouseleave)="onPointLeave()">
+                </circle>
+
+                @if (shouldShowLabel($index)) {
+                    <text class="x-axis-label" [attr.x]="point.x" [attr.y]="viewHeight - 10">{{ point.label }}</text>
+                }
+
+                @if (hoveredIndex() === $index) {
+                    <g class="tooltip-group">
+                        <rect
+                            class="tooltip-bg"
+                            [attr.x]="point.x - 26" [attr.y]="point.y - 30"
+                            width="52" height="20" rx="5">
+                        </rect>
+                        <text class="tooltip-text" [attr.x]="point.x" [attr.y]="point.y - 16">
+                            {{ point.value | number:'1.0-0' }}
+                        </text>
+                    </g>
+                }
+            }
+        </svg>
+    } @else {
+        <p class="no-data-text">No expense data to display.</p>
+    }
+</div>

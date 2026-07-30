@@ -29,6 +29,8 @@ export class MainLayoutComponent {
       this.activeTab.set('projects');
     } else if (url.startsWith('/home')) {
       this.activeTab.set('home');
+    }else if (url.startsWith('/statistics')) {
+      this.activeTab.set('statistics');
     }
     // add more branches here as you add real routes (statistics, news, etc.)
   }
@@ -39,7 +41,9 @@ export class MainLayoutComponent {
   goToHome() {
     this.router.navigate(['/home']);
   }
-
+  goToStatistics() {
+    this.router.navigate(['/statistics']);
+  }
   showComingSoon(feature: string) {
     this.comingSoonLabel.set(feature);
     setTimeout(() => this.comingSoonLabel.set(null), 2000);

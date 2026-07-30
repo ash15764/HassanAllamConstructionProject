@@ -1,0 +1,171 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+.line-chart-wrap {
+    background: #f7f7f7;
+    border: 1.5px solid #ececec;
+    border-radius: 14px;
+    padding: 22px;
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.line-chart-wrap:hover {
+    transform: translateY(-3px);
+    border-color: #ffb347;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.line-chart-svg {
+    display: block;
+    width: 100%;
+    height: 320px;
+    overflow: visible;
+}
+
+/* ---------------- Grid ---------------- */
+
+.grid-line {
+    stroke: #e6e6e6;
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+}
+
+.grid-label {
+    fill: #999;
+    font-size: 11px;
+    font-weight: 600;
+    user-select: none;
+}
+
+/* ---------------- Area ---------------- */
+
+.area-fill {
+    opacity: 1;
+}
+
+/* ---------------- Line ---------------- */
+
+.chart-line {
+    fill: none;
+    stroke-width: 4;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+/* ---------------- Points ---------------- */
+
+.chart-point {
+    fill: #ffffff;
+    stroke: #ff6a00;
+    stroke-width: 2.5;
+    cursor: pointer;
+    transition:
+        r .2s ease,
+        transform .2s ease,
+        stroke-width .2s ease,
+        fill .2s ease;
+}
+
+.chart-point:hover,
+.chart-point.hovered {
+    r: 6;
+    fill: #ff6a00;
+    stroke: #ffffff;
+    stroke-width: 3;
+}
+
+/* ---------------- X labels ---------------- */
+
+.x-axis-label {
+    fill: #666;
+    font-size: 11px;
+    font-weight: 600;
+    text-anchor: middle;
+    user-select: none;
+}
+
+/* ---------------- Tooltip ---------------- */
+
+.tooltip-group {
+    pointer-events: none;
+}
+
+.tooltip-bg {
+    fill: #2b2b2b;
+    opacity: .95;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,.25));
+}
+
+.tooltip-text {
+    fill: white;
+    font-size: 11px;
+    font-weight: 700;
+    text-anchor: middle;
+}
+
+/* ---------------- Empty State ---------------- */
+
+.no-data-text {
+    text-align: center;
+    color: #888;
+    font-size: .95rem;
+    font-style: italic;
+    padding: 60px 20px;
+}
+
+/* ---------------- Animation ---------------- */
+
+.chart-line,
+.area-fill {
+    animation: chartFade .8s ease;
+}
+
+.chart-point {
+    animation: pointPop .4s ease;
+}
+
+@keyframes chartFade {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pointPop {
+    from {
+        opacity: 0;
+        transform: scale(.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 720px) {
+
+    .line-chart-wrap {
+        padding: 16px;
+    }
+
+    .line-chart-svg {
+        height: 240px;
+    }
+
+    .grid-label,
+    .x-axis-label {
+        font-size: 10px;
+    }
+}

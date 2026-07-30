@@ -6,6 +6,7 @@ import { LogIn } from '../app/log-in/log-in';
 import { SignUp } from './sign-up/sign-up';
 import { AddProject } from './add-project/add-project';
 import { authGuard } from './guards/auth-guard';
+import { StatisticsPage } from './statistics-page/statistics-page';
 export const routes: Routes = [
   { path: 'sign-in', component: LogIn },
   { path: 'sign-up', component: SignUp },
@@ -18,6 +19,7 @@ export const routes: Routes = [
     children: [
       { path: 'home', component: HomePage },
       { path: 'projects', component: ProjectsPage },
+      { path: 'statistics', component: StatisticsPage },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },

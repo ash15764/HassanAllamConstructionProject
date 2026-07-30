@@ -1,0 +1,204 @@
+<section class="statistics-overview">
+    <div class="section-header">
+        <h2>Statistics</h2>
+    </div>
+    <div class="section-control">
+        <label for="timeframe-select">Timeframe:</label>
+        @for (option of timeframeOptions; track option) {
+            <button
+                type="button"
+                class="timeframe-button"
+                [class.active]="selectedTimeframe() === option"
+                (click)="setTimeframe(option)">
+                {{ option | titlecase }}
+            </button>
+        }
+        @if (selectedTimeframe() === 'months') {
+            <select
+                class="period-select"
+                name="selectedMonth"
+                [ngModel]="selectedMonth()"
+                (ngModelChange)="selectedMonth.set($event)">
+                <option [ngValue]="null" disabled selected>select a month</option>
+                @for (month of availableMonths(); track month.value) {
+                    <option [value]="month.value">{{ month.label }}</option>
+                }
+            </select>
+        } @else if (selectedTimeframe() === 'years') {
+            <select
+                class="period-select"
+                name="selectedYear"
+                [ngModel]="selectedYear()"
+                (ngModelChange)="selectedYear.set($event)">
+                <option [ngValue]="null" disabled selected>select a year</option>
+                @for (year of availableYears(); track year) {
+                    <option [ngValue]="year">{{ year }}</option>
+                }
+            </select>
+        }
+    </div>
+    <!-- Row 1: Active vs Completed -->
+    <div class="stat-row two-col">
+        <div class="stat-card">
+            <div class="stat-icon active-icon">📊</div>
+            <div class="stat-value">{{ activeProjectsCount() }}</div>
+            <div class="stat-label">Active Projects</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon completed-icon">✔</div>
+            <div class="stat-value">{{ completedProjectsCount() }}</div>
+            <div class="stat-label">Completed Projects</div>
+        </div>
+    </div>
+
+    <!-- Row 2: Budget-state breakdown -->
+    <div class="stat-row three-col">
+        <div class="stat-card safe-card">
+            <div class="stat-icon">🟢</div>
+            <div class="stat-value">{{ safeCount() }}</div>
+            <div class="stat-label">Safe Zone</div>
+        </div>
+
+        <div class="stat-card near-card">
+            <div class="stat-icon">🟡</div>
+            <div class="stat-value">{{ nearThresholdCount() }}</div>
+            <div class="stat-label">Near Threshold</div>
+        </div>
+
+        <div class="stat-card over-card">
+            <div class="stat-icon">🔴</div>
+            <div class="stat-value">{{ overBudgetCount() }}</div>
+            <div class="stat-label">Over Budget</div>
+        </div>
+    </div>
+
+    <!-- Row 3: Org-wide budget summary -->
+    <div class="stat-row one-col">
+        <div class="budget-summary-card" [ngClass]="overallBudgetStatus()">
+            <div class="budget-summary-header">
+                <h3>Organization Budget</h3>
+                <div class="header-right">
+                    <span class="overall-status-badge" [ngClass]="overallBudgetStatus()">
+                        {{ overallBudgetStatusLabel() }}
+                    </span>
+                    <button
+                        type="button"
+                        class="dropdown-toggle"
+                        [class.rotated]="isBudgetDropdownOpen()"
+                        (click)="toggleBudgetDropdown()"
+                        [attr.aria-expanded]="isBudgetDropdownOpen()"
+                        title="Show per-project breakdown">
+                        ▾
+                    </button>
+                </div>
+            </div>
+
+            <div class="budget-summary-bar">
+                <div class="budget-summary-fill" [ngClass]="overallBudgetStatus()" [style.width.%]="spendPercentage()"></div>
+            </div>
+
+            <div class="budget-summary-figures">
+                <div class="figure">
+                    <span class="figure-label">Total Spent</span>
+                    <span class="figure-value">${{ totalCurrentSpend() | number:'1.0-0' }}</span>
+                </div>
+                <div class="figure">
+                    <span class="figure-label">Total Allocated</span>
+                    <span class="figure-value">${{ totalAllocatedBudget() | number:'1.0-0' }}</span>
+                </div>
+                <div class="figure">
+                    <span class="figure-label">Utilization</span>
+                    <span class="figure-value">{{ (spendRatio() * 100) | number:'1.0-1' }}%</span>
+                </div>
+            </div>
+
+            <div class="dropdown-content" [class.open]="isBudgetDropdownOpen()">
+                <div class="dropdown-inner">
+                    <div class="dropdown-divider"></div>
+                    @for (project of filteredProjects(); track project.id) {
+                        <div class="project-breakdown-row">
+                            <span class="breakdown-name">{{ project.name }}</span>
+                            <div class="breakdown-bar">
+                                <div
+                                    class="breakdown-bar-fill"
+                                    [ngClass]="getBudgetState(project)"
+                                    [style.width.%]="project.allocatedBudget > 0 ? (project.currentSpend / project.allocatedBudget * 100) : 0">
+                                </div>
+                            </div>
+                            <span class="breakdown-value">${{ project.currentSpend | number:'1.0-0' }} / ${{ project.allocatedBudget | number:'1.0-0' }}</span>
+                        </div>
+                    } @empty {
+                        <p class="no-active-text">No projects to break down for this period.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 4: Average progress across active projects -->
+    <div class="stat-row one-col">
+        <div class="progress-summary-card">
+            <div class="progress-summary-main">
+                <div class="progress-summary-text">
+                    <h3>Average Progress</h3>
+                    <p>Across all active (non-completed) projects</p>
+                </div>
+
+                <div class="progress-right-group">
+                    @if (hasActiveProjects()) {
+                        <div class="progress-ring-wrap">
+                            <svg viewBox="0 0 100 100" class="progress-ring">
+                                <circle class="progress-ring-track" cx="50" cy="50" r="42"></circle>
+                                <circle
+                                    class="progress-ring-fill"
+                                    cx="50" cy="50" r="42"
+                                    [style.strokeDasharray]="264"
+                                    [style.strokeDashoffset]="264 - (264 * averageActiveProgress() / 100)">
+                                </circle>
+                            </svg>
+                            <div class="progress-ring-label">{{ averageActiveProgress() }}%</div>
+                        </div>
+                    } @else {
+                        <p class="no-active-text">No active projects to average for this period.</p>
+                    }
+
+                    <button
+                        type="button"
+                        class="dropdown-toggle"
+                        [class.rotated]="isProgressDropdownOpen()"
+                        (click)="toggleProgressDropdown()"
+                        [attr.aria-expanded]="isProgressDropdownOpen()"
+                        title="Show per-project breakdown">
+                        ▾
+                    </button>
+                </div>
+            </div>
+
+            <div class="dropdown-content" [class.open]="isProgressDropdownOpen()">
+                <div class="dropdown-inner">
+                    <div class="dropdown-divider"></div>
+                    @for (project of activeProjectsList(); track project.id) {
+                        <div class="project-breakdown-row">
+                            <span class="breakdown-name">{{ project.name }}</span>
+                            <div class="breakdown-bar">
+                                <div class="breakdown-bar-fill progress-fill-color" [style.width.%]="project.progress"></div>
+                            </div>
+                            <span class="breakdown-value">{{ project.progress }}%</span>
+                        </div>
+                    } @empty {
+                        <p class="no-active-text">No active projects to break down for this period.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 5: Expenses over time — granularity adapts to the timeframe above -->
+    <div class="stat-row one-col">
+        <app-line-chart
+            [labels]="chartLabels()"
+            [data]="chartData()">
+        </app-line-chart>
+    </div>
+</section>
