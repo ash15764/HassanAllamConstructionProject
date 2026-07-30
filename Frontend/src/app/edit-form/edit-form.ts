@@ -19,6 +19,7 @@ export class EditForm implements OnChanges, OnInit {
   Current_Budget: number = 0;
   Initial_Budget: number = 0;
   progress: number = 0;
+  currentSpend: number = 0;
   phase: string = '';
   minEndDate: string = new Date().toISOString().split('T')[0];
   status: "planning" | "in-progress" | "completed" = "planning";
@@ -45,6 +46,7 @@ export class EditForm implements OnChanges, OnInit {
         this.endDate = project.estimatedEndDate;
         this.Initial_Budget = project.allocatedBudget;
         this.Current_Budget = project.allocatedBudget;
+        this.currentSpend = project.currentSpend;
         this.progress = project.progress;
         this.phase = project.phase;
         this.status = project.status;
@@ -57,8 +59,13 @@ export class EditForm implements OnChanges, OnInit {
       }
     });
   }
-  OnSubmit(){
-    
+  OnSubmit() {
+    if (this.progress === 100 && this.currentSpend > this.Current_Budget) {
+        this.errorMessage.set('This project is over budget and cannot be marked as completed.');
+        this.IsError.set(true);
+        return; // stop here — never call UpdateProject
+    }
+
     this.projectService.UpdateProject(this.projectId, {
         name: this.projectName,
         location: this.location,
@@ -73,8 +80,8 @@ export class EditForm implements OnChanges, OnInit {
             this.errorMessage.set('Failed to save changes.');
             this.IsError.set(true);
         }
-    });  
-  }
+    });
+}
   onCancel(){
     this.closed.emit();
   }

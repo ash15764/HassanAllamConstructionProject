@@ -276,12 +276,10 @@ form {
     font-weight: 600;
     padding: 9px 12px;
     border-radius: 7px;
+    white-space: normal;   /* allow wrapping */
     overflow: hidden;
-    white-space: nowrap;
-    transform-origin: left center;
-    animation: growFromLeft 0.4s ease-out;
+    animation: revealMessage 0.35s ease-out;
 }
-
 @keyframes growFromLeft {
     from {
         width: 0;
@@ -296,6 +294,27 @@ form {
         padding-left: 12px;
         padding-right: 12px;
         border-width: 1.5px;
+    }
+}
+
+@keyframes revealMessage {
+    from {
+        opacity: 0;
+        transform: translateX(-12px);
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        border-width: 0;
+        margin-top: 0;
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+        max-height: 80px;
+        padding-top: 9px;
+        padding-bottom: 9px;
+        border-width: 1.5px;
+        margin-top: 0;
     }
 }
 

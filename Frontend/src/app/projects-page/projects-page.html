@@ -6,24 +6,86 @@
         </div>
     </div>
 
-    <div class="project-cards">
-        @for (project of projects(); track project.id) {
-            <div class="project-card">
+    <div class="filters-bar">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input
+                type="text"
+                placeholder="Search projects by name..."
+                [ngModel]="searchTerm()"
+                (ngModelChange)="searchTerm.set($event)">
+        </div>
+
+        <div class="filter-group">
+            <span class="filter-label">Status</span>
+            <div class="pill-group">
+                <button type="button" [class.active]="statusFilter() === 'all'" (click)="statusFilter.set('all')">All</button>
+                <button type="button" class="pill-planning" [class.active]="statusFilter() === 'planning'" (click)="statusFilter.set('planning')">Planning</button>
+                <button type="button" class="pill-in-progress" [class.active]="statusFilter() === 'in-progress'" (click)="statusFilter.set('in-progress')">In Progress</button>
+                <button type="button" class="pill-completed" [class.active]="statusFilter() === 'completed'" (click)="statusFilter.set('completed')">Completed</button>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <span class="filter-label">Budget</span>
+            <div class="pill-group">
+                <button type="button" [class.active]="budgetFilter() === 'all'" (click)="budgetFilter.set('all')">All</button>
+                <button type="button" class="pill-safe" [class.active]="budgetFilter() === 'safe'" (click)="budgetFilter.set('safe')">Safe Zone</button>
+                <button type="button" class="pill-near" [class.active]="budgetFilter() === 'near-threshold'" (click)="budgetFilter.set('near-threshold')">Near Threshold</button>
+                <button type="button" class="pill-over" [class.active]="budgetFilter() === 'over-budget'" (click)="budgetFilter.set('over-budget')">Over Budget</button>
+            </div>
+        </div>
+    </div>
+    @if (hasOverBudgetProjects()) {
+        <div class="budget-warning-banner">
+            ⚠ Please check and locate more resources for over-budget projects.
+        </div>
+    }
+     <div class="project-cards">
+        @for (project of filteredProjects(); track project.id) {
+            <div class="project-card"
+                    [class.over-budget-card]="project.currentSpend > project.allocatedBudget"
+                    [class.completed-card]="project.progress === 100"
+                    [class.near-threshold-card]="getBudgetState(project) === 'near-threshold'">
+                 @if (project.progress === 100) {
+                    <div class="confetti-banner">
+                        <span class="confetti-dot dot-1"></span>
+                        <span class="confetti-dot dot-2"></span>
+                        <span class="confetti-dot dot-3"></span>
+                        <span class="confetti-dot dot-4"></span>
+                        <span class="confetti-dot dot-5"></span>
+                        <span class="confetti-dot dot-6"></span>
+                        <span class="confetti-dot dot-7"></span>
+                        <span class="confetti-text">🎉 Project Completed</span>
+                    </div>
+                }
                 <div class="card-top">
                     <h3>{{ project.name }}</h3>
-                    <span class="status-badge" [ngClass]="project.status">{{ project.status }}</span>
+
+                    <div class="card-badges">
+                        <span class="budget-status" [ngClass]="getBudgetState(project)">
+                            {{ getBudgetState(project) | titlecase }}
+                        </span>
+
+                        <span class="status-badge" [ngClass]="project.status">
+                            {{ project.status }}
+                        </span>
+                    </div>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" [style.width.%]="project.progress"></div>
                 </div>
-                <div class="card-bottom-row">                
-                <p class="progress-text">{{ project.progress }}% complete</p>
-                <button class="Expenses" type="button" (click)="ShowExpenses(project)">Show Current Expenses</button></div>
+                <div class="card-bottom-row">
+                    <p class="progress-text">{{ project.progress }}% complete</p>
+                    <button class="Expenses" type="button" (click)="ShowExpenses(project)">Show Current Expenses</button>
+                </div>
                 <div class="card-actions-row">
                     <p class="budget-text">${{ project.currentSpend }} / ${{ project.allocatedBudget }}</p>
                     @if (canEditProject()) {
                         <div class="action-buttons">
-                            <button class="edit-button" (click)="ToEdit(project.id)" title="Edit Project">Edit</button>
+                            @if(project.progress < 100) {
+                                <button class="edit-button" (click)="ToEdit(project.id)" title="Edit Project">Edit</button>
+                            }
                             <button class="delete-button" (click)="DeleteProject(project.id)" title="Delete Project">Delete</button>
                         </div>
                     }

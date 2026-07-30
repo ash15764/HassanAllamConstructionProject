@@ -98,7 +98,7 @@
     color: #2b2b2b;
     line-height: 1.3;
 }
- 
+.budget-status,
 .status-badge {
     flex-shrink: 0;
     padding: 3px 10px;
@@ -109,7 +109,27 @@
     text-transform: capitalize;
     white-space: nowrap;
 }
- 
+.card-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+
+
+.budget-status.over-budget {
+    background-color: #c62828;
+}
+
+.budget-status.near-threshold {
+    background-color: #f9a825;
+}
+
+.budget-status.safe {
+    background-color: #2e7d32;
+}
+
 .status-badge.planning {
     background-color: #9e9e9e;
 }
@@ -231,4 +251,263 @@
  
 .card-bottom-row .budget-text {
     margin: 0;
+}
+.budget-warning-banner {
+    background: #fdecea;
+    border: 1.5px solid #f5c2bd;
+    color: #c62828;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 18px;
+    animation: fadeInDown 0.35s ease-out;
+}
+
+.project-card.over-budget-card {
+    border-color: #f5a8a1;
+    background: #fff5f4;
+}
+
+.project-card.over-budget-card:hover {
+    border-color: #ef5350;
+    box-shadow: 0 10px 22px rgba(198, 40, 40, 0.15);
+}
+
+.project-card.over-budget-card .card-top h3 {
+    color: #c62828;
+}
+
+.project-card.over-budget-card .progress-bar {
+    background: #f5d4d1;
+}
+
+.project-card.over-budget-card .progress-fill {
+    background: linear-gradient(90deg, #ef5350, #c62828);
+}
+
+.project-card.over-budget-card .budget-text {
+    color: #c62828;
+    font-weight: 700;
+}
+
+.project-card.completed-card {
+    border-color: #a5d6a7;
+    background-color: #f1f8f2;
+    background-image: repeating-linear-gradient(
+        135deg,
+        rgba(67, 160, 71, 0.06) 0px,
+        rgba(67, 160, 71, 0.06) 1px,
+        transparent 1px,
+        transparent 12px
+    );
+}
+
+.project-card.completed-card:hover {
+    border-color: #66bb6a;
+    box-shadow: 0 10px 22px rgba(67, 160, 71, 0.18);
+}
+
+.project-card.completed-card .card-top h3 {
+    color: #2e7d32;
+}
+
+.project-card.completed-card .progress-bar {
+    background: #d7ecd8;
+}
+
+.project-card.completed-card .progress-fill {
+    background: linear-gradient(90deg, #66bb6a, #43a047);
+}
+
+.project-card.completed-card .budget-text {
+    color: #2e7d32;
+}
+
+.confetti-banner {
+    position: relative;
+    background: linear-gradient(90deg, #43a047, #66bb6a);
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin: -2px -2px 4px;
+    overflow: hidden;
+}
+
+.confetti-text {
+    position: relative;
+    z-index: 2;
+    letter-spacing: 0.3px;
+}
+
+.confetti-dot {
+    position: absolute;
+    top: -6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    opacity: 0;
+    animation: confettiFall 1.6s ease-in forwards;
+    z-index: 1;
+}
+
+.dot-1 { left: 6%;  background: #ffeb3b; animation-delay: 0s; }
+.dot-2 { left: 20%; background: #ffffff; animation-delay: 0.15s; }
+.dot-3 { left: 35%; background: #ffca28; animation-delay: 0.3s; }
+.dot-4 { left: 50%; background: #ffffff; animation-delay: 0.1s; }
+.dot-5 { left: 65%; background: #ffeb3b; animation-delay: 0.35s; }
+.dot-6 { left: 80%; background: #ffffff; animation-delay: 0.2s; }
+.dot-7 { left: 93%; background: #ffca28; animation-delay: 0.05s; }
+
+.filters-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 1 220px;
+    background: #f7f7f7;
+    border: 1.5px solid #ececec;
+    border-radius: 8px;
+    padding: 8px 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-box:focus-within {
+    border-color: #ff6a00;
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15);
+}
+
+.search-icon {
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.85rem;
+    color: #2b2b2b;
+    width: 100%;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.pill-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.pill-group button {
+    padding: 6px 14px;
+    border-radius: 16px;
+    border: 1.5px solid #e0e0e0;
+    background: #ffffff;
+    color: #666;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.pill-group button:hover {
+    border-color: #ccc;
+}
+
+.pill-group button.active {
+    color: #ffffff;
+    background-color: #666;
+    border-color: transparent;
+}
+
+/* Status pills — colors match your existing status-badge palette */
+.pill-planning.active { background-color: #9e9e9e; }
+.pill-in-progress.active { background: linear-gradient(90deg, #ff9a3c, #ff6a00); }
+.pill-completed.active { background-color: #2e7d32; }
+
+/* Budget pills — colors match your card-state palette */
+.pill-safe.active { background-color: #2e7d32; }
+.pill-near.active { background-color: #f9a825; }
+.pill-over.active { background-color: #c62828; }
+
+/* generic "All" pill for either group */
+.pill-group button.active:not(.pill-planning):not(.pill-in-progress):not(.pill-completed):not(.pill-safe):not(.pill-near):not(.pill-over) {
+    background-color: #555;
+}
+
+.project-card.near-threshold-card {
+    border-color: #ffe1a3;
+    background-color: #fffaf0;
+}
+
+.project-card.near-threshold-card:hover {
+    border-color: #f9a825;
+    box-shadow: 0 10px 22px rgba(249, 168, 37, 0.18);
+}
+
+.project-card.near-threshold-card .card-top h3 {
+    color: #a86b00;
+}
+
+.project-card.near-threshold-card .progress-bar {
+    background: #ffe9c2;
+}
+
+.project-card.near-threshold-card .progress-fill {
+    background: linear-gradient(90deg, #ffca28, #f9a825);
+}
+
+.project-card.near-threshold-card .budget-text {
+    color: #a86b00;
+    font-weight: 700;
+}
+
+@media (max-width: 720px) {
+    .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        flex-wrap: wrap;
+    }
+}
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(38px) rotate(220deg);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
