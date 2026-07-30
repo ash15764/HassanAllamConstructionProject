@@ -47,7 +47,7 @@
                         </label>
                         <label>
                             Date
-                            <input type="date" [(ngModel)]="expenseDate" name="expenseDate">
+                            <input type="date" [(ngModel)]="expenseDate" name="expenseDate" [max]="today">
                         </label>
                         <label>
                             Note

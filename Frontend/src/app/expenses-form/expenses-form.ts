@@ -29,7 +29,7 @@ export class ExpensesForm implements OnChanges {
   note = '';
   amount: number | null = null;
   expenseDate = new Date().toISOString().slice(0, 10);
-
+today = new Date().toISOString().slice(0, 10);
   allExpenses = computed(() => [...this.existingExpenses(), ...this.pendingExpenses()]);
   totalExpenses = computed(() => this.allExpenses().reduce((total, expense) => total + Number(expense.amount), 0));
   remaining = computed(() => this.totalBudget - this.totalExpenses());
