@@ -1,0 +1,88 @@
+<div class="receipt-overlay" (click)="close()">
+    <section class="receipt-panel" role="dialog" aria-modal="true" aria-labelledby="receipt-title" (click)="$event.stopPropagation()">
+        <div class="receipt-title">
+            <p class="eyebrow">Project financial summary</p>
+            <h2 id="receipt-title">Expenses Receipt</h2>
+            <p>{{ projectName }}</p>
+        </div>
+
+        @if (isLoading()) {
+            <p class="state-message">Loading expenses…</p>
+        } @else {
+            <div class="expense-cards">
+                @for (expense of allExpenses(); track expense.id) {
+                    <article class="expense-card" [class.pending]="expense.id.startsWith('pending-')">
+                        <div>
+                            <h3>{{ expense.name }}</h3>
+                            <time>{{ expense.date | date:'mediumDate' }}</time>
+                        </div>
+                        <div class="expense-actions">
+                            <strong>{{ expense.amount | currency:'USD':'symbol':'1.2-2' }}</strong>
+                            <button type="button" class="note-toggle" (click)="toggleNote(expense.id)" [attr.aria-expanded]="isNoteExpanded(expense.id)" [attr.aria-label]="isNoteExpanded(expense.id) ? 'Hide note' : 'Show note'">
+                                {{ isNoteExpanded(expense.id) ? '▲' : '▼' }}
+                            </button>
+                        </div>
+                        <div class="expense-note" [class.open]="isNoteExpanded(expense.id)">
+                            <div><span>Note:</span> {{ expense.note || 'No note provided.' }}</div>
+                        </div>
+                        @if (expense.id.startsWith('pending-')) {
+                            <span class="pending-label">Pending confirmation</span>
+                        
+                        }
+                    </article>
+                } @empty {
+                    <p class="empty-expenses">No expenses have been added to this project yet.</p>
+                }
+
+                <article class="expense-card add-expense-card">
+                    <h3>Add new expense</h3>
+                    <div class="expense-fields">
+                        <label>
+                            Expense name
+                            <input type="text" [(ngModel)]="name" name="name" placeholder="e.g. Concrete delivery">
+                        </label>
+                        <label>
+                            Amount
+                            <input type="number" [(ngModel)]="amount" name="amount" min="0.01" step="0.01" placeholder="0.00">
+                        </label>
+                        <label>
+                            Date
+                            <input type="date" [(ngModel)]="expenseDate" name="expenseDate">
+                        </label>
+                        <label>
+                            Note
+                            <textarea [(ngModel)]="note" name="note" placeholder="Optional note about the expense"></textarea>
+                        </label>
+                    </div>
+                    <button type="button" class="add-button" (click)="stageExpense()">Add expense</button>
+                </article>
+            </div>
+
+            <div class="receipt-details">
+                <div class="receipt-row">
+                    <span>Total expenses</span>
+                    <strong>{{ totalExpenses() | currency:'USD':'symbol':'1.2-2' }}</strong>
+                </div>
+                <div class="receipt-row">
+                    <span>Total budget</span>
+                    <strong>{{ totalBudget | currency:'USD':'symbol':'1.2-2' }}</strong>
+                </div>
+                <div class="receipt-row remaining-row" [class.over-budget]="remaining() < 0">
+                    <span>{{ remaining() < 0 ? 'Over budget' : 'Remaining budget' }}</span>
+                    <strong>{{ remaining() | currency:'USD':'symbol':'1.2-2' }}</strong>
+                </div>
+            </div>
+        }
+
+        @if (errorMessage()) {
+            <p class="error-message">{{ errorMessage() }}</p>
+        }
+
+        <div class="receipt-actions">
+            <button type="button" class="close-button" (click)="close()">Close Receipt</button>
+            <button type="button" class="confirm-button" [disabled]="!pendingExpenses().length || isSaving()" (click)="confirmExpenses()">
+                {{ isSaving() ? 'Saving…' : 'Confirm expenses' }}
+            </button>
+        </div>
+    </section>
+</div>

@@ -83,4 +83,9 @@ export class ProjectService {
         const url = `${this.apiUrl.replace('.json', '')}/${projectId}.json`;
         return this.http.patch<void>(url, updates);
     }
+
+    UpdateCurrentSpend(projectId: string, currentSpend: number): Observable<void> {
+        const url = `${this.apiUrl.replace('.json', '')}/${projectId}.json`;
+        return this.http.patch<void>(url, { currentSpend });
+    }
 }

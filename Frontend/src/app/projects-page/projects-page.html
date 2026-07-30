@@ -16,17 +16,14 @@
                 <div class="progress-bar">
                     <div class="progress-fill" [style.width.%]="project.progress"></div>
                 </div>
-                <div class="card-bottom-row">
+                <div class="card-bottom-row">                
                 <p class="progress-text">{{ project.progress }}% complete</p>
-                @if (canEditProject()) {
-                    <div class="action-buttons">
-                        <button class="edit-button" (click)="ToEdit(project.id)" title="Edit Project">Edit</button>
-                    </div>
-                }</div>
-                <div class="card-bottom-row">
+                <button class="Expenses" type="button" (click)="ShowExpenses(project)">Show Current Expenses</button></div>
+                <div class="card-actions-row">
                     <p class="budget-text">${{ project.currentSpend }} / ${{ project.allocatedBudget }}</p>
                     @if (canEditProject()) {
                         <div class="action-buttons">
+                            <button class="edit-button" (click)="ToEdit(project.id)" title="Edit Project">Edit</button>
                             <button class="delete-button" (click)="DeleteProject(project.id)" title="Delete Project">Delete</button>
                         </div>
                     }
@@ -43,4 +40,13 @@
         (saved)="onEditSaved()"
         (closed)="onEditClosed()">
     </app-edit-form>
+}
+@if (selectedExpenseProject(); as project) {
+    <app-expenses-form
+        [projectId]="project.id"
+        [projectName]="project.name"
+        [totalBudget]="project.allocatedBudget"
+        (updated)="AllProjects()"
+        (closed)="onExpensesClosed()">
+    </app-expenses-form>
 }

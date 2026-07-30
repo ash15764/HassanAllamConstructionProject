@@ -5,14 +5,16 @@ import { Router } from '@angular/router';
 import { UserService } from '../services/UserService';
 import { ProjectService } from '../services/ProjectService';
 import { EditForm } from '../edit-form/edit-form';
+import { ExpensesForm } from '../expenses-form/expenses-form';
 @Component({
   selector: 'app-projects-page',
-  imports: [CommonModule, EditForm],
+  imports: [CommonModule, EditForm, ExpensesForm],
   templateUrl: './projects-page.html',
   styleUrl: './projects-page.css',
 })
 export class ProjectsPage {
   editingProjectId = signal<string | null>(null);
+  selectedExpenseProject = signal<ProjectModel | null>(null);
   constructor(private router: Router, private userService: UserService, 
     private projectService: ProjectService) {
   }
@@ -45,6 +47,12 @@ export class ProjectsPage {
   }
   onEditClosed() {
     this.editingProjectId.set(null);
+  }
+  ShowExpenses(project: ProjectModel) {
+    this.selectedExpenseProject.set(project);
+  }
+  onExpensesClosed() {
+    this.selectedExpenseProject.set(null);
   }
   DeleteProject(projectId: string) {
     this.projectService.DeleteProject(projectId).subscribe(() => {

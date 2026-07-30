@@ -149,7 +149,22 @@
     color: #444;
     font-weight: 600;
 }
- 
+
+.Expenses{
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #ff9a3c;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.Expenses:hover{
+    text-decoration: underline;
+    color: #eb8e37;
+}
+
 .empty-state {
     grid-column: 1 / -1;
     text-align: center;
@@ -158,7 +173,8 @@
     font-size: 0.9rem;
 }
 
-.card-bottom-row {
+.card-bottom-row,
+.card-actions-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -168,6 +184,7 @@
  
 .action-buttons {
     display: flex;
+    flex-direction: column;
     gap: 8px;
     flex-shrink: 0;
 }
